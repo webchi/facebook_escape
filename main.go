@@ -1,8 +1,8 @@
 package main
 
 import (
-	"fmt"
-	fb "github.com/huandu/facebook/v2"
+	"os"
+	"path"
 )
 
 type (
@@ -10,23 +10,20 @@ type (
 )
 
 func main() {
+	_ = os.Mkdir(path.Join(getDir(), "config"), 0700)
 
-	// Create a global App var to hold app id and secret.
-	var globalApp = fb.New("your-app-id", "your-app-secret")
-	var session *fb.Session
+	env := mustEnv()
 
-	session = globalApp.Session("token")
+	// go listen(env)
 
-	// This validates the access token by ensuring that the current user ID is properly returned. err is nil if the token is valid.
-    err := session.Validate()
-	
-	if err != nil {
-		panic(err)
+	cred := loadCredential()
+	if cred != nil {
+		mustRefreshToken(env, cred.Token)
+	} else {
+		cred = newCredential(env)
 	}
+	go watchToken(env, cred)
 
-	res, _ := session.Get("/me/posts", fb.Params{
-		"fields":       "created_time,comments,message",
-		"access_token": "EAADhQj7y68YBAB9oZCUb9Vmvbem07apBszKdrLQBCVSx6Pw7o1r3dsDJGI2Pf7mC8WHUaenKsAnisdXgBDRiandw1nyib6UgEDCij12krW0lmbm2ESjQMI1G2erZBkco9diazFEWfypT3Sxncat7btLg9Kk5xWlxQIEboCiEv4UBJKmvzJZCg2ObrHRLwbrsqPJZCyCZBxE1auRRT44fkPZBZCeopjKG7i4ksZAoFCeAuekrk0qnMedRwyImkYrWo18ZD",
-	})
-	fmt.Println("Here is my Facebook first name:\n", res)
+	initFacebookSession(env, cred)
+
 }

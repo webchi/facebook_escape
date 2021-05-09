@@ -7,5 +7,8 @@ For local development create facebook app and set environment variables:
 ```sh
 FACEBOOK_APP_ID=214XXXXXXXXX810
 FACEBOOK_APP_SECRET=e80YYYYYYYYYYYYYYYYYYYYYYYYY2cd1
-BASE_URL=http://localhost:80
 ```
+
+## Reference
+1. https://github.com/huandu/facebook
+2. https://github.com/mohemohe/switchfeed

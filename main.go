@@ -31,8 +31,6 @@ func main() {
 
 	paging, _ := res.Paging(sess)
 
-	var allResults []Result
-
 	// append first page of results to slice of Result
 	allResults = append(allResults, paging.Data()...)
 

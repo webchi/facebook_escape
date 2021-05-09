@@ -42,6 +42,7 @@ type (
 )
 
 var sess *facebook.Session
+var allResults []facebook.Result
 
 func initFacebookSession(env *Env, cred *Credential) {
 	app := facebook.New(env.AppID, env.AppSecret)

@@ -22,8 +22,11 @@ func mustEnv() *Env {
 	if listenAddr == "" {
 		listenAddr = ":8080"
 	}
-	if appID == "" || appSecret == "" || baseURL == "" {
-		panic("Didn't defined 'FACEBOOK_APP_ID', 'FACEBOOK_APP_SECRET', 'BASE_URL'")
+	if baseURL == "" {
+		baseURL = "http://localhost:80"
+	}
+	if appID == "" || appSecret == "" {
+		panic("Didn't defined 'FACEBOOK_APP_ID', 'FACEBOOK_APP_SECRET'")
 	}
 	return &Env{
 		AppID:      appID,

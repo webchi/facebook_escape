@@ -27,15 +27,6 @@ type (
 			Next     string `json:"next"`
 		} `json:"paging"`
 	}
-	Image struct {
-		ID     string `json:"id"`
-		Name     string `json:"name"`
-		Images []struct {
-			Width  int    `json:"width"`
-			Height int    `json:"height"`
-			Source string `json:"source"`
-		} `json:"images"`
-	}
 	Result struct {
 		Message  string
 	}

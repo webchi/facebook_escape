@@ -3,6 +3,7 @@ package main
 import (
 	"os"
 	"path"
+	"fmt"
 )
 
 type (
@@ -26,4 +27,28 @@ func main() {
 
 	initFacebookSession(env, cred)
 
+	res, _ := sess.Get("/me/posts", nil)
+
+	paging, _ := res.Paging(sess)
+
+	var allResults []Result
+
+	// append first page of results to slice of Result
+	allResults = append(allResults, paging.Data()...)
+
+	for {
+		// get next page.
+		noMore, err := paging.Next()
+		if err != nil {
+		  panic(err)
+		}
+		if noMore {
+		  // No more results available
+		  break
+		}
+		// append current page of results to slice of Result
+		allResults = append(allResults, paging.Data()...)
+	  }
+
+	  fmt.Println("Here is my Facebook data:", allResults)
 }

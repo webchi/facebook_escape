@@ -5,7 +5,6 @@ import (
 	"github.com/huandu/facebook/v2"
 	"log"
 	"os"
-	"sort"
 	"time"
 )
 
@@ -39,8 +38,6 @@ type (
 	}
 	Result struct {
 		Message  string
-		ImageID  string
-		ImageURL string
 	}
 )
 
@@ -84,65 +81,4 @@ func watchToken(env *Env, cred *Credential) {
 		}
 		time.Sleep(time.Minute)
 	}
-}
-
-func getImageURL() (*Result, error) {
-	feedResult, err := sess.Get("/me/feed", M{
-		"fields": "application,object_id,message",
-	})
-	if err != nil {
-		log.Println("feed fetch error:", err)
-		return nil, err
-	}
-
-	feed := new(Feed)
-	if err := feedResult.Decode(feed); err != nil {
-		log.Println("feed decode error:", err)
-		return nil, err
-	}
-	if len(feed.Data) == 0 {
-		return nil, err
-	}
-	latestObjectID := ""
-	message := ""
-	for _, v := range feed.Data {
-		if v.Application.NameSpace == "nintendoswitchshare" {
-			latestObjectID = v.ObjectID
-			message = v.Message
-			break
-		}
-	}
-	if latestObjectID == "" {
-		return nil, err
-	}
-
-	imageResult, err := sess.Get(latestObjectID, M{
-		"fields": "name,images",
-	})
-	if err != nil {
-		log.Println("image list fetch error:", err)
-		return nil, err
-	}
-
-	image := new(Image)
-	if err := imageResult.Decode(image); err != nil {
-		log.Println("feed decode error:", err)
-		return nil, err
-	}
-	if len(image.Images) == 0 {
-		return nil, err
-	}
-	sort.Slice(image.Images, func(i, j int) bool {
-		return image.Images[i].Width > image.Images[j].Width
-	})
-	if message == "" {
-		// FIXME: なんかこれでもtext取れたり取れなかったりするんだよなぁ
-		message = image.Name
-	}
-
-	return &Result{
-		Message:  message,
-		ImageID:  image.ID,
-		ImageURL: image.Images[0].Source,
-	}, nil
 }

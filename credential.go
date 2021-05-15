@@ -22,7 +22,7 @@ func newCredential(env *Env) *Credential {
 	app := facebook.New(env.AppID, env.AppSecret)
 	app.RedirectUri = env.BaseURL + "/token"
 
-	time.Sleep(2 * time.Second) // HACK: server listen on〜に邪魔されないように
+	time.Sleep(2 * time.Second) // HACK: server listen on
 
 	fmt.Println("https://www.facebook.com/dialog/oauth?client_id=" + env.AppID + "&redirect_uri=" + app.RedirectUri + "&scope=public_profile,user_posts")
 	fmt.Println("Visit to accept access token")
@@ -32,7 +32,7 @@ func newCredential(env *Env) *Credential {
 
 	token, err := app.ParseCode(code)
 	if err != nil {
-		log.Println("ログインコードのパースに失敗しました:", code, err)
+		log.Println("Login code parsing failed:", code, err)
 		os.Exit(2)
 	}
 

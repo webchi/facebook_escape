@@ -1,4 +1,4 @@
-module github.com/webchi/facebook_scraper
+module facebook_escape
 
 go 1.16
 

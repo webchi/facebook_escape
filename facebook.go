@@ -50,7 +50,7 @@ func mustRefreshToken(env *Env, token string) *Credential {
 		"fb_exchange_token": token,
 	})
 	if err != nil {
-		log.Println("ロングターム トークンの取得に失敗しました:", err)
+		log.Println("Failed to get token:", err)
 		os.Exit(3)
 	}
 	expiresIn, _ := res.Get("expires_in").(json.Number).Int64()

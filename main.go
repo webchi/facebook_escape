@@ -62,7 +62,7 @@ func main() {
 			fmt.Println(err)
 			continue
 		}
-		file, err := os.Create(folder + "/" + timestamp.Format("02-15-04-05") + "-" + regexp.MustCompile("\\s").Split(data["message"].(string),2)[0]) // open file
+		file, err := os.Create(folder + "/" + timestamp.Format("02-15-04-05") + "-" + regexp.MustCompile("\\w+").FindString(data["message"].(string))) // open file
 		if err != nil {
 			fmt.Println(err)
 			continue

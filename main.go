@@ -5,10 +5,6 @@ import (
 	"path"
 )
 
-type (
-	M = map[string]interface{}
-)
-
 func main() {
 	_ = os.Mkdir(path.Join(getDir(), "config"), 0700)
 
